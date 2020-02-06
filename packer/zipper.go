@@ -18,7 +18,14 @@ func RemoveZip(zipPath string) error {
 
 // ZipFiles zip all the search files in an.output directory
 func ZipFiles(path string, output string, files []string) (string, error) {
-	outPutZipDirectory := fmt.Sprintf("%s/.builds/%s.zip", path, output)
+
+	zipStorage := fmt.Sprintf("%s/.cfbuilds/", path)
+
+	if _, err := os.Stat(zipStorage); os.IsNotExist(err) {
+		os.Mkdir(zipStorage, os.ModeDir)
+	}
+
+	outPutZipDirectory := fmt.Sprintf("%s/%s.zip", zipStorage, output)
 	newZip, err := os.Create(outPutZipDirectory)
 	if err != nil {
 		return "", err
