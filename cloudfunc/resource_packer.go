@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"os"
 
 	"github.com/eclesiomelojunior/terrago/packer"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -70,6 +71,11 @@ func resourcePackerUpdate(d *schema.ResourceData, m interface{}) error {
 
 func resourcePackerDelete(d *schema.ResourceData, m interface{}) error {
 	zipPath := d.Id()
+
+	if _, err := os.Stat(zipPath); os.IsNotExist(err) {
+		d.SetId("")
+		return nil
+	}
 
 	if err := packer.RemoveZip(zipPath); err != nil {
 		return err

@@ -12,14 +12,14 @@ func NormalizePath(directoryPath string) []string {
 	basePath := filepath.Base(directoryPath)
 
 	err := filepath.Walk(directoryPath, func(path string, info os.FileInfo, err error) error {
-		nodeModulesFiles, err := regexp.MatchString("node_modules", path)
+		nodeModulesFilesOrPackageLock, err := regexp.MatchString("node_modules|package-lock", path)
 		if err != nil {
 			return err
 		}
 
 		isConfigFile := info.Name()[:1] == "."
 
-		if nodeModulesFiles || isConfigFile || info.IsDir() {
+		if nodeModulesFilesOrPackageLock || isConfigFile || info.IsDir() {
 			return nil
 		}
 
