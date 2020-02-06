@@ -44,7 +44,15 @@ func resourcePackerCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourcePackerRead(d *schema.ResourceData, m interface{}) error {
+	zipPath := d.Id()
+
+	if _, err := os.Stat(zipPath); os.IsNotExist(err) {
+		d.SetId("")
+		return nil
+	}
+
 	return nil
+
 }
 
 func resourcePackerUpdate(d *schema.ResourceData, m interface{}) error {
