@@ -22,7 +22,7 @@ func ZipFiles(path string, output string, files []string) (string, error) {
 	zipStorage := fmt.Sprintf("%s/.cfbuilds", path)
 
 	if _, err := os.Stat(zipStorage); os.IsNotExist(err) {
-		os.Mkdir(zipStorage, os.ModePerm)
+		os.Mkdir(zipStorage, 0755)
 	}
 
 	outPutZipDirectory := fmt.Sprintf("%s/%s.zip", zipStorage, output)
